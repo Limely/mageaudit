@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "updated": "2026-08-24",
+    "note": "SEED DATA — hand-maintained flat file, not authoritative. Verify branch EOL dates, latest patch levels and CVE fix versions against Adobe security bulletins (helpx.adobe.com/security) and the Magento release notes before relying on a verdict. This file is the single source the version check reads; a future DB would expose the same shape.",
+    "latestPatch": { "magento2": "2.4.8-p2" }
+  },
+
+  "_comment_eolBranches": "Keyed by the major.minor string /magento_version reports (Magento only discloses e.g. '2.4', not the patch level). Whole-branch end-of-life => high risk regardless of patch.",
+  "eolBranches": {
+    "1": { "label": "Magento 1.x", "eol": "2020-06-30" },
+    "2.0": { "label": "Magento 2.0", "eol": "2018-03-31" },
+    "2.1": { "label": "Magento 2.1", "eol": "2019-06-30" },
+    "2.2": { "label": "Magento 2.2", "eol": "2019-12-31" },
+    "2.3": { "label": "Magento 2.3", "eol": "2022-09-08" }
+  },
+
+  "_comment_minorLines": "Per-2.4.x-line status, used when the exact version is known (from a future asset-hash fingerprint, or when a minor version leaks). status: eol | maintenance | supported.",
+  "minorLines": {
+    "2.4.0": { "status": "eol", "latestPatch": "2.4.0" },
+    "2.4.1": { "status": "eol", "latestPatch": "2.4.1" },
+    "2.4.2": { "status": "eol", "latestPatch": "2.4.2" },
+    "2.4.3": { "status": "eol", "latestPatch": "2.4.3-p3" },
+    "2.4.4": { "status": "eol", "latestPatch": "2.4.4-p13" },
+    "2.4.5": { "status": "eol", "latestPatch": "2.4.5-p12" },
+    "2.4.6": { "status": "maintenance", "latestPatch": "2.4.6-p11" },
+    "2.4.7": { "status": "supported", "latestPatch": "2.4.7-p6" },
+    "2.4.8": { "status": "supported", "latestPatch": "2.4.8-p2" }
+  },
+
+  "_comment_vulnerabilities": "Notable vulnerabilities. fixedIn lists the first patched version PER minor line; a store on a version below the fix for its own line is affected. platforms gates M1 vs M2. Only asserted as 'confirmed' when the detected version is precise enough (minor or patch level); on a branch-only detection they are surfaced as 'possible if unpatched'.",
+  "vulnerabilities": [
+    {
+      "id": "CVE-2024-34102",
+      "alias": "CosmicSting",
+      "severity": "critical",
+      "title": "Improper XML XXE → arbitrary file read, chainable to RCE",
+      "platforms": ["magento2"],
+      "fixedIn": ["2.4.7-p1", "2.4.6-p6", "2.4.5-p8", "2.4.4-p9"],
+      "kb": "APSB24-40"
+    },
+    {
+      "id": "CVE-2022-24086",
+      "alias": "TrojanOrder",
+      "severity": "critical",
+      "title": "Template-side email injection → pre-auth RCE",
+      "platforms": ["magento2"],
+      "fixedIn": ["2.4.3-p2", "2.4.4"],
+      "kb": "APSB22-12"
+    },
+    {
+      "id": "SUPEE-5344",
+      "alias": "Shoplift",
+      "severity": "critical",
+      "title": "SQL injection → full admin takeover",
+      "platforms": ["magento1"],
+      "m1FixedAtOrAbove": "1.9.1.1",
+      "kb": "SUPEE-5344"
+    },
+    {
+      "id": "SUPEE-10570",
+      "alias": null,
+      "severity": "high",
+      "title": "Multiple security fixes (RCE, XSS, CSRF)",
+      "platforms": ["magento1"],
+      "m1FixedAtOrAbove": "1.9.3.7",
+      "kb": "SUPEE-10570"
+    }
+  ]
+}
