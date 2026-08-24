@@ -117,6 +117,7 @@ Implemented in `lib/scanner/checks.ts` (all read-only GET probes):
 | `security.opendev`         | `.env`, `app/etc/env.php`, `app/etc/local.xml` leaks |
 | `security.opendownloader`  | `/downloader/` reachable (Magento 1) |
 | `security.openmagmi`       | Magmi importer publicly reachable |
+| `security.opensetup`       | Magento 2 Setup Wizard (`/setup/`) publicly reachable |
 | `security.exposedapi`      | Unauthenticated `/rest/V1/products` returns data |
 | `security.composer`        | `composer.json` public (leaks package versions) |
 | `security.phpinfo`         | `phpinfo.php` / `info.php` exposed |

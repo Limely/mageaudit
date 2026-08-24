@@ -124,6 +124,18 @@ export const checks: CheckDef[] = [
     },
   },
   {
+    id: "security.opensetup",
+    title: "Exposed Setup Wizard",
+    run: async ({ baseUrl, detection }) => {
+      if (detection.platform !== "magento2") return ok("n/a");
+      // The M2 setup wizard shell references /setup/pub/ assets — a themed 404
+      // won't, so this avoids false positives on the generic "Magento" title.
+      const { exposed, res } = await probeExposed(baseUrl, "setup/", /\/setup\/pub\//i);
+      if (exposed) return { result: "fail", riskRating: "high", resultString: "/setup/ wizard is publicly reachable", indicators: res.url };
+      return ok();
+    },
+  },
+  {
     id: "security.exposedapi",
     title: "Exposed REST API",
     run: async ({ baseUrl, detection }) => {

@@ -1,14 +1,15 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useScan, type ScanState } from "@/lib/useScan";
 import type { RiskRating } from "@/lib/scanner/types";
 import type { StoredReport } from "@/lib/scanner/store";
-import ScanResults from "./ScanResults";
+import SecurityChecks from "./SecurityChecks";
+import StoreDetails from "./StoreDetails";
+import DetectedExtensions from "./DetectedExtensions";
 
-/** Turn a persisted report back into the ScanState shape ScanResults renders. */
+/** Turn a persisted report back into the ScanState shape the UI renders. */
 function toScanState(r: StoredReport): ScanState {
   return {
     status: "done",
@@ -54,7 +55,6 @@ export default function StoreReport({
   domain: string;
   initialReport: StoredReport | null;
 }) {
-  const router = useRouter();
   const { state, scan } = useScan();
 
   // First visit with nothing cached: kick off a live scan automatically.
@@ -71,17 +71,20 @@ export default function StoreReport({
       : { status: "scanning", checks: [] };
 
   const busy = display.status === "scanning";
+  const errored = display.status === "error";
   const overall = display.summary?.overall;
-  const scannedLabel = live
-    ? busy
+  const scannedLabel = errored
+    ? ""
+    : busy
       ? "Scanning now…"
-      : "Scanned just now"
-    : initialReport
-      ? `Last scanned ${relativeTime(initialReport.scannedAt)}`
-      : "";
+      : live
+        ? "Scanned just now"
+        : initialReport
+          ? `Last scanned ${relativeTime(initialReport.scannedAt)}`
+          : "";
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-5xl mx-auto px-6">
       {/* Report header */}
       <header className="mb-8">
         <Link href="/" className="text-xs text-gray-400 hover:text-gray-700 font-medium">
@@ -91,7 +94,7 @@ export default function StoreReport({
           <div className="min-w-0">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1.5">Magento health report</p>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight break-words">{domain}</h1>
-            <p className="text-sm text-gray-500 mt-2">{scannedLabel}</p>
+            {scannedLabel && <p className="text-sm text-gray-500 mt-2">{scannedLabel}</p>}
           </div>
           <div className="flex items-center gap-3 flex-shrink-0">
             {overall && !busy && (
@@ -110,7 +113,23 @@ export default function StoreReport({
         </div>
       </header>
 
-      <ScanResults state={display} onReset={() => router.push("/")} />
+      {errored ? (
+        <div className="bg-white border border-red-200 rounded-2xl px-6 py-5 shadow-sm">
+          <div className="flex items-center gap-2 mb-1">
+            <svg className="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+            </svg>
+            <span className="text-sm font-semibold text-gray-900">Couldn&rsquo;t scan that store</span>
+          </div>
+          <p className="text-sm text-gray-500">{display.error}</p>
+        </div>
+      ) : (
+        <div className="space-y-6">
+          <StoreDetails enrichment={display.enrichment} />
+          <DetectedExtensions modules={display.enrichment?.modules} />
+          <SecurityChecks checks={display.checks} summary={display.summary} scanning={busy} />
+        </div>
+      )}
     </div>
   );
 }

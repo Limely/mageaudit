@@ -20,7 +20,7 @@ export default async function StoreScanPage({ params }: { params: Promise<{ doma
   return (
     <>
       <Nav />
-      <main className="flex-1 pt-24 md:pt-28 pb-20 px-4 bg-gray-50/60">
+      <main className="flex-1 pt-24 md:pt-28 pb-20 bg-gray-50/60">
         <StoreReport domain={decoded} initialReport={initialReport} />
       </main>
       <Footer />
