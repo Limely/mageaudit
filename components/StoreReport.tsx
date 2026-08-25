@@ -93,7 +93,20 @@ export default function StoreReport({
         <div className="mt-3 flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1.5">Magento health report</p>
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight break-words">{domain}</h1>
+            <div className="flex items-center gap-3 min-w-0">
+              {/* eslint-disable-next-line @next/next/no-img-element -- external favicon service, not worth next/image config */}
+              <img
+                src={`https://geticon.dev/?url=${encodeURIComponent(domain)}`}
+                width={52}
+                height={52}
+                alt=""
+                className="w-16 h-16 p-1.5 rounded-2xl border border-gray-200 bg-white flex-shrink-0"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
+              />
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 tracking-tight break-words min-w-0">{domain}</h1>
+            </div>
             {scannedLabel && <p className="text-sm text-gray-500 mt-2">{scannedLabel}</p>}
           </div>
           <div className="flex items-center gap-3 flex-shrink-0">

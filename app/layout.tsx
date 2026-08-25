@@ -40,7 +40,9 @@ const jsonLd = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${jakarta.variable} h-full antialiased`}>
+    // data-scroll-behavior lets Next 16 suspend the CSS smooth-scroll during
+    // route transitions, so new pages snap to the top instead of animating.
+    <html lang="en" data-scroll-behavior="smooth" className={`${jakarta.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-white font-sans text-gray-900">
         <script
           type="application/ld+json"

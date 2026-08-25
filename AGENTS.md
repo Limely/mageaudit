@@ -12,7 +12,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 Marketing site for MageAudit — a tool that scans a Magento store's public pages and reports on speed, theme, extensions, security vulnerabilities and SEO. Product of Limely Ltd, sibling to MageDrop.
 
-**Naming:** The product was originally "MageScan" (name taken; the folder name still reflects it). Now **MageAudit** (mageaudit.com). All branding reads from `lib/site.ts` — rename there only, never hardcode the product name in components.
+**Naming:** The product was originally "MageScan" (name taken). Now **MageAudit** (mageaudit.com). All branding reads from `lib/site.ts` — rename there only, never hardcode the product name in components.
 
 **Scanner backend:** The actual scan functionality is being built separately by another agent, who will document it in `scan.md` at the project root. Read `scan.md` if it exists before touching anything scan-related, and do not overwrite it from this side.
 
